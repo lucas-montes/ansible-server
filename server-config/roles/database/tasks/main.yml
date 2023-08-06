@@ -1,0 +1,20 @@
+- name: Install PostgreSQL
+  apt:
+    name: postgresql
+    state: present
+  become: true
+
+- name: Create a PostgreSQL database
+  postgresql_db:
+    name: "{{ postgres_db_name }}"
+    encoding: UTF8
+  become: true
+
+- name: Create a PostgreSQL user
+  postgresql_user:
+    name: "{{ postgres_db_user }}"
+    password: "{{ postgres_db_password }}" # Access the encrypted variable
+    encrypted: yes
+    db: "{{ postgres_db_name }}"
+    role_attr_flags: LOGIN
+  become: true

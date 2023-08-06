@@ -1,0 +1,23 @@
+linode:
+  hosts:
+    invfin:
+      ansible_host: webserver
+  vars:
+    user: lucas
+
+hetzner:
+  hosts:
+    recsys:
+      ansible_host: hetzner
+  vars:
+    user: lucas
+
+test:
+  hosts:
+    localtest:
+      ansible_ssh_private_key_file: /home/lucas/.ssh/magicmirror
+      ansible_host: localhost
+      ansible_user: lucas
+      ansible_port: 2222
+  vars:
+    user: lucas

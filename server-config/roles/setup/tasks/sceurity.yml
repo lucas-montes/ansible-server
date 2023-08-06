@@ -1,0 +1,64 @@
+---
+- name: Setup passwordless sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: "^%sudo"
+    line: "%sudo ALL=(ALL) NOPASSWD: ALL"
+    validate: "/usr/sbin/visudo -cf %s"
+
+- name: Disable password authentication for root
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?PermitRootLogin"
+    line: "PermitRootLogin no"
+
+- name: Disable password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?PasswordAuthentication"
+    line: "PasswordAuthentication no"
+
+- name: Disable X11 forwarding
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?X11Forwarding"
+    line: "X11Forwarding no"
+
+- name: Disable MaxAuthTries
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?MaxAuthTries"
+    line: "MaxAuthTries 2"
+
+- name: Disable AllowTcpForwarding
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?AllowTcpForwarding"
+    line: "AllowTcpForwarding no"
+
+- name: Disable AllowAgentForwarding
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?AllowAgentForwarding"
+    line: "AllowAgentForwarding no"
+
+- name: Disable X11 forwarding
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#?X11Forwarding"
+    line: "X11Forwarding no"
+
+- name: Set allowed users
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^AllowUsers"
+    line: 'AllowUsers {{ allowed_users | join(" ") }}'
+    state: present

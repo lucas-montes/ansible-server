@@ -1,0 +1,13 @@
+[Unit]
+Description=Your Rust Web Application
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/var/www/app/your_app_binary
+Restart=always
+User=your_app_user
+Group=your_app_group
+
+[Install]
+WantedBy=multi-user.target

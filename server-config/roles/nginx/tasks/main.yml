@@ -1,0 +1,31 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: Default Nginx
+  template:
+    src: nginx.conf.j2
+    dest: "{{ nginx_conf_path }}"
+  notify: Restart Nginx
+
+- name: Create Rust App Nginx Site Configuration
+  template:
+    src: rust_app.conf.j2
+    dest: "{{ nginx_sites_available_path }}/rust_app.conf"
+  notify: Restart Nginx
+
+- name: Create Django Website Nginx Site Configuration
+  template:
+    src: django_website.conf.j2
+    dest: "{{ nginx_sites_available_path }}/django_website.conf"
+  notify: Restart Nginx
+
+- name: Enable Rust App and Django Website Nginx Sites
+  file:
+    src: "{{ item }}"
+    dest: "{{ nginx_sites_enabled_path }}/{{ item | basename }}"
+    state: link
+  with_items:
+    - "{{ nginx_sites_available_path }}/rust_app.conf"
+    - "{{ nginx_sites_available_path }}/django_website.conf"

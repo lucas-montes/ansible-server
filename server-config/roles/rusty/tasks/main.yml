@@ -1,0 +1,19 @@
+- name: Copy Rust application files
+  copy:
+    src: ../rust_web_app/target/release/your_app_binary
+    dest: /var/www/app/
+    remote_src: yes
+    mode: 0755
+
+- name: Create a systemd service
+  template:
+    src: your_app.service.j2
+    dest: /etc/systemd/system/your_app.service
+  notify:
+    - Reload Systemd
+
+- name: Start and enable the Rust web application service
+  systemd:
+    name: your_app
+    state: started
+    enabled: yes

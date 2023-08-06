@@ -1,0 +1,21 @@
+https://devops.stackexchange.com/questions/15891/how-can-i-set-lets-encrypt-certificates-with-ansible
+https://github.com/geerlingguy/ansible-role-certbot/tree/master/tasks
+
+ansible-playbook -i <container_ip_address>, my_ansible_playbook.yml
+
+
+- sed -i -e '/^\(#\|\)PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+- sed -i -e '/^\(#\|\)PasswordAuthentication/s/^.*$/PasswordAuthentication no/' /etc/ssh/sshd_config
+- sed -i -e '/^\(#\|\)X11Forwarding/s/^.*$/X11Forwarding no/' /etc/ssh/sshd_config
+- sed -i -e '/^\(#\|\)MaxAuthTries/s/^.*$/MaxAuthTries 2/' /etc/ssh/sshd_config
+- sed -i -e '/^\(#\|\)AllowTcpForwarding/s/^.*$/AllowTcpForwarding no/' /etc/ssh/sshd_config
+- sed -i -e '/^\(#\|\)AllowAgentForwarding/s/^.*$/AllowAgentForwarding no/' /etc/ssh/sshd_config
+- sed -i -e '/^\(#\|\)AuthorizedKeysFile/s/^.*$/AuthorizedKeysFile .ssh\/authorized_keys/' /etc/ssh/sshd_config
+- sed -i '$a AllowUsers holu' /etc/ssh/sshd_config
+
+
+https://community.hetzner.com/tutorials/securing-ssh#step-16---deactivate-unused-functions
+
+https://community.hetzner.com/tutorials/securing-ssh#step-13---enable-user-for-ssh
+
+https://community.hetzner.com/tutorials/securing-ssh#step-11---deactivate-the-root-login

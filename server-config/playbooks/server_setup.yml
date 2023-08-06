@@ -1,0 +1,5 @@
+---
+- hosts: hetzner
+  become: true
+
+  tasks:
