@@ -1,12 +1,8 @@
 ---
 - name: Add Nginx configuration file from template
   template:
-    src: nginx.conf.j2
+    src: web-server.j2
     dest: "{{ NGINX_SITE_AVAILABLE_PATH }}/{{ domain }}.conf"
-  vars:
-    domain: "{{ domain }}"
-    local_port: "{{ local_port }}"
-    nginx_user: "{{ NGINX_USER }}"
 
 - name: Create a symlink to sites-enabled
   file:

@@ -4,22 +4,21 @@
     state: enabled
     default: deny
 
-- name: UFW - Allow SSH connections
-  community.general.ufw:
+- name: Allow SSH through UFW
+  ufw:
     rule: allow
-    name: OpenSSH
+    port: "{{ vault_vars.CUSTOM_SSH_PORT }}"
+    proto: tcp
 
 - name: UFW - Allow Nginx (HTTP)
   community.general.ufw:
     rule: allow
-    name: "Nginx HTTP"
     port: 80
     proto: tcp
 
 - name: UFW - Allow Nginx (HTTPS)
   community.general.ufw:
     rule: allow
-    name: "Nginx HTTPS"
     port: 443
     proto: tcp
 

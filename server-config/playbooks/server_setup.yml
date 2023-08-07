@@ -1,6 +1,6 @@
 ---
 - name: Server Setup
-  hosts: hetzner
+  hosts: "{{ host }}"
   become: true
 
   tasks:

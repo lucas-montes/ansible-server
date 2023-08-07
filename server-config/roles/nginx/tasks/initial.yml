@@ -17,6 +17,11 @@
     group: root
     mode: "0644"
 
+- name: Add Nginx configuration file from template
+  template:
+    src: nginx.conf.j2
+    dest: "{{ NGINX_BASE_PATH }}/nginx.conf"
+
 - name: Install Certbot
   become: true
   apt:
@@ -35,12 +40,12 @@
     state: started
     enabled: yes
 
-- name: Add a new website
-  become: true
-  import_tasks: add_web.yml
-  tags: install
-
 - name: Run Certbot to obtain SSL certificates
   become: true
   command: certbot certonly --nginx --non-interactive --agree-tos --email {{ vault_vars.MY_EMAIL }} --domains {{ domain }}
   notify: Reload Nginx
+
+- name: Add a new website
+  become: true
+  import_tasks: add_web.yml
+  tags: install

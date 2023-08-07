@@ -1,0 +1,23 @@
+---
+- name: Create new web server for new domain
+  hosts: "{{ host }}"
+  become: true
+
+  tasks:
+    - name: Include vault variables
+      ansible.builtin.include_vars:
+        file: ../vault.yml
+        name: vault_vars
+
+    - name: Run Certbot to obtain SSL certificates
+      become: true
+      command: certbot certonly --nginx --non-interactive --agree-tos --email {{ vault_vars.MY_EMAIL }} --domains {{ domain }}
+      notify: Reload Nginx
+
+    - name: Add a new website
+      become: true
+      include_role:
+        name: nginx
+        tasks_from: add_web
+      tags: install
+      notify: Reload Nginx
