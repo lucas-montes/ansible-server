@@ -1,5 +1,6 @@
-nginx_conf_path: /etc/nginx/nginx.conf
-nginx_sites_available_path: /etc/nginx/sites-available
-nginx_sites_enabled_path: /etc/nginx/sites-enabled
-nginx_user: www-data
-nginx_group: www-data
+NGINX_BASE_PATH: "/etc/nginx"
+NGINX_SITE_AVAILABLE_PATH: "{{ NGINX_BASE_PATH }}/sites-available"
+NGINX_SITE_ENABLED_PATH: "{{ NGINX_BASE_PATH }}/sites-enabled"
+NGINX_CONF_PATH: "{{ NGINX_BASE_PATH }}/conf.d"
+NGINX_USER: www-data
+NGINX_GROUP: www-data

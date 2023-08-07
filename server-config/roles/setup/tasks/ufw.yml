@@ -1,9 +1,28 @@
+---
+- name: UFW - Enable and deny by default
+  community.general.ufw:
+    state: enabled
+    default: deny
+
 - name: UFW - Allow SSH connections
   community.general.ufw:
     rule: allow
     name: OpenSSH
 
-- name: UFW - Enable and deny by default
+- name: UFW - Allow Nginx (HTTP)
   community.general.ufw:
-    state: enabled
-    default: deny
+    rule: allow
+    name: "Nginx HTTP"
+    port: 80
+    proto: tcp
+
+- name: UFW - Allow Nginx (HTTPS)
+  community.general.ufw:
+    rule: allow
+    name: "Nginx HTTPS"
+    port: 443
+    proto: tcp
+
+- name: UFW - Reload rules
+  community.general.ufw:
+    state: reloaded

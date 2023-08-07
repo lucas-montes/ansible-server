@@ -1,5 +1,35 @@
 ---
-- hosts: hetzner
+- name: Server Setup
+  hosts: hetzner
   become: true
 
   tasks:
+    - name: Include vault variables
+      ansible.builtin.include_vars:
+        file: ../vault.yml
+        name: vault_vars
+
+    - name: Update the server with apt update
+      include_role:
+        name: setup
+        tasks_from: initial
+
+    - name: Create the first default user
+      include_role:
+        name: user
+        tasks_from: main
+
+    - name: Set up all the security aspects for login and so on
+      include_role:
+        name: setup
+        tasks_from: security
+
+    - name: Set up nginx and certbot
+      include_role:
+        name: nginx
+        tasks_from: initial
+
+    - name: Set up the UFW
+      include_role:
+        name: setup
+        tasks_from: ufw

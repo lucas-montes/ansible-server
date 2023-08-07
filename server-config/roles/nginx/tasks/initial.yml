@@ -1,0 +1,46 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: delete default nginx site
+  file:
+    path: "{{ NGINX_SITE_ENABLED_PATH }}/default"
+    state: absent
+  notify: Reload Nginx
+
+- name: Set up ssl config
+  template:
+    src: ssl-params.conf.j2
+    dest: "{{ NGINX_BASE_PATH }}/snippets/ssl-params.conf"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install Certbot
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - certbot
+      - python3-certbot-nginx
+
+- name: Ensure nginx is running and enabled
+  become: true
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Add a new website
+  become: true
+  import_tasks: add_web.yml
+  tags: install
+
+- name: Run Certbot to obtain SSL certificates
+  become: true
+  command: certbot certonly --nginx --non-interactive --agree-tos --email {{ vault_vars.MY_EMAIL }} --domains {{ domain }}
+  notify: Reload Nginx
