@@ -1,0 +1,16 @@
+---
+- name: Create new daemon
+  hosts: "{{ host }}"
+  become: true
+
+  tasks:
+    - name: Include vault variables
+      ansible.builtin.include_vars:
+        file: ../vault.yml
+        name: vault_vars
+
+    - name: Add daemon
+      include_role:
+        name: systemd
+        tasks_from: main.yml
+      tags: install
