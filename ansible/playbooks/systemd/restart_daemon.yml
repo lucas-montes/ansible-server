@@ -1,0 +1,19 @@
+---
+- name: Restart daemon
+  hosts: "{{ host }}"
+  become: true
+
+  tasks:
+    - name: Include vault variables
+      ansible.builtin.include_vars:
+        file: ../vault.yml
+        name: vault_vars
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: "Restart {{ service }} service"
+      ansible.builtin.systemd:
+        name: "{{ service }}.service"
+        state: restarted

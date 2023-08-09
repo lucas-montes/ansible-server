@@ -1,0 +1,13 @@
+---
+- name: Copy and Fetch Database
+  hosts: "{{ host }}"
+  become: true
+  vars:
+    database_name: "backup_{{ ansible_date_time.date }}_{{ ansible_date_time.time | regex_replace(':', '-') }}.sqlite"
+  tasks:
+    # TODO: src and dest should be vars
+    - name: Fetch the backup to local computer
+      ansible.builtin.fetch:
+        src: "{{ src }}"
+        dest: "{{ dst }}/{{ database_name }}"
+        flat: yes

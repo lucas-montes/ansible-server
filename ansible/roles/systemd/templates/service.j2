@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
+WorkingDirectory={{ path_to_wd }}
 ExecStart={{ path_to_executable }}
 Restart=always
 RestartSec=5
