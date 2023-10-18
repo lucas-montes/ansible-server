@@ -6,7 +6,7 @@
   tasks:
     - name: Include vault variables
       ansible.builtin.include_vars:
-        file: ../vault.yml
+        file: ../../vault.yml
         name: vault_vars
 
     - name: Reload systemd daemon

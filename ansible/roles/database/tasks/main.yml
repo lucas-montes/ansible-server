@@ -3,18 +3,34 @@
     name: postgresql
     state: present
   become: true
+  tags:
+    - install_postgresql
+
+- name: Ensure the PostgreSQL server is running
+  service:
+    name: postgresql
+    state: started
+  tags:
+    - start_postgresql
 
 - name: Create a PostgreSQL database
   postgresql_db:
-    name: "{{ postgres_db_name }}"
-    encoding: UTF8
-  become: true
+    name: "{{ db_name }}"
+    login_user: "{{ db_user }}"
+    login_password: "{{ db_password }}"
+  notify:
+    - Reload PostgreSQL
+    - Restart PostgreSQL
+  tags:
+    - create_db
 
 - name: Create a PostgreSQL user
   postgresql_user:
-    name: "{{ postgres_db_user }}"
-    password: "{{ postgres_db_password }}" # Access the encrypted variable
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
     encrypted: yes
-    db: "{{ postgres_db_name }}"
+    db: "{{ db_name }}"
     role_attr_flags: LOGIN
   become: true
+  tags:
+    - create_user

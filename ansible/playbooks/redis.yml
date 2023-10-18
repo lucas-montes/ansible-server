@@ -1,0 +1,6 @@
+---
+- name: Manage Redis
+  hosts: your_target_server
+  become: true
+  roles:
+    - redis

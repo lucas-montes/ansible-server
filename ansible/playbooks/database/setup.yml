@@ -1,0 +1,23 @@
+---
+- name: Setup Postgres
+  hosts: "{{ host }}"
+  become: true
+
+  vars:
+    db_name: "{{ db_name }}"
+    db_user: "{{ db_user }}"
+
+  tasks:
+    - name: Include vault variables
+      ansible.builtin.include_vars:
+        file: ../vault.yml
+        name: vault_vars
+
+    - name: Create a PostgreSQL database
+      include_role:
+        name: database
+        tasks_from: main.yml
+      vars:
+        db_name: "{{ db_name }}"
+        db_user: "{{ db_user }}"
+        db_password: "{{ vault_vars.INVFIN_DB_PASSWORD }}"

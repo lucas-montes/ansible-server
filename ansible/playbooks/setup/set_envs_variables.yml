@@ -1,0 +1,15 @@
+---
+- name: Update env variables
+  hosts: "{{ host }}"
+  become: true
+
+  tasks:
+    - name: Include vault variables
+      ansible.builtin.include_vars:
+        file: ../vault.yml
+        name: vault_vars
+
+    - name: Set the new env variables
+      include_role:
+        name: setup
+        tasks_from: populate_env

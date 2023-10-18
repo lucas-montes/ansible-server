@@ -1,0 +1,9 @@
+- name: PROD Generating env file template
+  become: true
+  template:
+    src: .env.j2
+    dest: "/var/www/api/.env"
+    owner: lucas
+    group: lucas
+  notify:
+    - Reload systemd
